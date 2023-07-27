@@ -1,0 +1,20 @@
+class Solution:
+    def floodFill(self, image: List[List[int]], sr: int, sc: int, color: int) -> List[List[int]]:
+        m, n = len(image), len(image[0])
+        start = image[sr][sc]
+
+        if start == color:
+            return image
+
+        def draw(i, j):
+            if image[i][j] == start:
+                image[i][j] = color
+                if i < 0 or i >= m : return
+                if j < 0 or j >= n : return
+                draw(i - 1, j)
+                draw(i, j - 1)
+                draw(i + 1, j)
+                draw(i, j + 1)
+
+        draw(sr, sc)
+        return image
