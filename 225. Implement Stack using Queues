@@ -1,19 +1,35 @@
+from queue import Queue
+
 class MyStack:
 
     def __init__(self):
-        self.queue = []
+        self.q1 = Queue()
+        self.q2 = Queue()
         
     def push(self, x: int) -> None:
-        if x not in self.queue:
-            self.queue.append(x)
+        self.q1.put(x)
 
     def pop(self) -> int:
-        if len(self.queue) > 0:
-            return self.queue.pop()
+        while self.q1.qsize() != 1: 
+            x = self.q1.get()
+            self.q2.put(x)
+        x = self.q1.get()
+        while not self.q2.empty():
+            self.q1.put(self.q2.get())
+        
+        return x
        
     def top(self) -> int:
-        return self.queue[-1]
+        while self.q1.qsize() != 1: 
+            x = self.q1.get()
+            self.q2.put(x)
+        x = self.q1.get()
+        while self.q2.full():
+            self.q1.put(self.q2.get())
+        self.q1.put(x)
+
+        return x
 
     def empty(self) -> bool:
-        return not self.queue
+        return self.q1.empty()
         
